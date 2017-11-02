@@ -39,5 +39,5 @@ class City(models.Model):
     name = models.CharField(primary_key=True)
     state_province = models.ForeignKey(State_Province)
 
-    def _str__(self):
+    def __str__(self):
         return self.name

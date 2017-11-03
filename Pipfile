@@ -15,6 +15,7 @@ django = "*"
 "psycopg2" = "*"
 djangorestframework = "*"
 prospector = "*"
+pillow = "*"
 
 
 [requires]

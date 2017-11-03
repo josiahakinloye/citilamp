@@ -20,7 +20,7 @@ class Continent(models.Model):
         return self.continent_name
 
 class Country(models.Model):
-    name = models.CharField(primary_key=True)
+    name = models.CharField(primary_key=True,max_length=250)
     continent = models.ForeignKey(Continent)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Country(models.Model):
 
 class State_Province(models.Model):
 
-    name = models.CharField(primary_key=True)
+    name = models.CharField(primary_key=True,max_length=250)
     country = models.ForeignKey(Country)
 
     def __str__(self):
@@ -36,7 +36,7 @@ class State_Province(models.Model):
 
 class City(models.Model):
 
-    name = models.CharField(primary_key=True)
+    name = models.CharField(primary_key=True,max_length=250)
     state_province = models.ForeignKey(State_Province)
 
     def __str__(self):

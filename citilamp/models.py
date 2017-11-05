@@ -5,7 +5,7 @@ from django.db import models
 # Continent Model
 class Continent(models.Model):
 
-    continent_name = models.CharField(max_length=200,primary_key=True)
+    name = models.CharField(max_length=200,primary_key=True,unique=True)
     image = models.ImageField(
                                 width_field="width_field",
                                 height_field="height_field")
@@ -17,7 +17,7 @@ class Continent(models.Model):
     climate = models.TextField()
     continent_map = models.CharField(max_length=250)
     def __str__(self):
-        return self.continent_name
+        return self.name
 
 class Country(models.Model):
     name = models.CharField(primary_key=True,max_length=250)

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'citilamp.apps.CitilampConfig',
-    'graphene_django'
+    'graphene_django',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

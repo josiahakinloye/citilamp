@@ -119,3 +119,4 @@ pip-selfcheck.json
 .idea/
 CitilampSite/citilamp/migrations/0001_initial.py
 CitilampSite/db.sqlite3
+Pip*

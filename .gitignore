@@ -115,3 +115,7 @@ venv.bak/
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+*.sqlite3
+.idea/
+CitilampSite/citilamp/migrations/0001_initial.py
+CitilampSite/db.sqlite3

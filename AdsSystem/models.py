@@ -10,7 +10,6 @@ class AdsError(Exception):
 
 class AdOwner(models.Model):
     name = models.CharField(primary_key=True,unique=True)
-    #todo:addreess is required how to make sure model fileds are not empty
     address  = models.TextField()
 
 class Ads(models.Model):
@@ -18,6 +17,7 @@ class Ads(models.Model):
     description = models.TextField()
     start_date = models.DateTimeField(default=timezone.now())
     stop_date = models.DateTimeField()
+    owner = models.ForeignKey(AdOwner, on_delete=models.CASCADE)
     def is_valid(self):
         """
         This checks if a particular ad is valid.So admins can know when to take out an ad

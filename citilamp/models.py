@@ -99,7 +99,6 @@ class StateProvince(models.Model):
         verbose_name_plural = "States And Provinces"
 
 class City(CountryAndCityInfo):
-
     name = models.CharField(primary_key=True,max_length=250)
     stateprovince = models.ForeignKey(StateProvince, on_delete=models.CASCADE)
     def __str__(self):
@@ -116,18 +115,24 @@ class CountryAndCityAttractions(models.Model):
     name = models.CharField(primary_key=True, max_length=450, null=False)
     city= models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE,blank=True,null=True)
+    #city_or_country = models.ForeignKey(Continent, on_delete=models.CASCADE,blank=True,null=True)
     address = models.TextField(blank=True)
     website = models.URLField(blank=True)
     #what can be done in this place
     details = models.TextField(blank=True)
 
     #check that the attraction was tied to a city or a country not both, if not do not save
-
+    #Todo:write tests for this
     def save(self, *args, **kwargs):
         if self.city  or  self.country:
             if self.city and self.country:
                 raise Exception("Attraction can only be tied to city or country not both")
             else:
+                if self.city:
+                    self.city_or_country = models.ForeignKey(self.city, on_delete=models.CASCADE, blank=True, null=True)
+                if self.country:
+                    self.city_or_country = models.ForeignKey(self.country, on_delete=models.CASCADE, blank=True, null=True)
+                print (self.city_or_country)
                 super(CountryAndCityAttractions, self).save(*args, **kwargs)
         else:
             raise Exception("Attraction must be linked to a country or a city")

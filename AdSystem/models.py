@@ -4,6 +4,10 @@ from django.db import models
 
 from django.utils import timezone
 # Create your models here.
+
+class AdsError(Exception):
+    pass
+
 class AdOwner(models.Model):
     name = models.CharField(primary_key=True,unique=True)
     #todo:addreess is required how to make sure model fileds are not empty
@@ -16,19 +20,19 @@ class Ads(models.Model):
     stop_date = models.DateTimeField()
     def is_valid(self):
         """
-        This checks if a particular ad is valid.So admins can no when to take out an ad
+        This checks if a particular ad is valid.So admins can know when to take out an ad
         :return: Bool
         """
         now = timezone.now()
         return now < self.stop_date
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
+    is_valid.admin_order_field = "stop_date"
+    is_valid.boolean = True
+    is_valid.short_description = "Is Ad still valid"
+
+
+    def save(self, *args, **kwargs):
         if self.stop_date < self.start_date:
-            self.save()
+            super(Ads, self).save(*args, **kwargs)
         else:
-            raise ads_error("Stop date is less than start date")
-
-
-class ads_error(Exception):
-    pass
+            raise AdsError("Stop date is less than start date")

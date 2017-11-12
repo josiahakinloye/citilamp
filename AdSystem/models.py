@@ -28,7 +28,7 @@ class Ads(models.Model):
 
     is_valid.admin_order_field = "stop_date"
     is_valid.boolean = True
-    is_valid.short_description = "Is Ad still valid"
+    is_valid.short_description = "Is Ad still valid?"
 
 
     def save(self, *args, **kwargs):

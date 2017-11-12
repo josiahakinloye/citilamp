@@ -115,7 +115,6 @@ class CountryAndCityAttractions(models.Model):
     name = models.CharField(primary_key=True, max_length=450, null=False)
     city= models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE,blank=True,null=True)
-    #city_or_country = models.ForeignKey(Continent, on_delete=models.CASCADE,blank=True,null=True)
     address = models.TextField(blank=True)
     website = models.URLField(blank=True)
     #what can be done in this place
@@ -141,6 +140,7 @@ class CountryAndCityAttractions(models.Model):
         return self.name
 
     class Meta:
+        abstract = True
         ordering = ["name"]
 
 class Park(CountryAndCityAttractions):

@@ -106,7 +106,6 @@ class Query(object):
         name = kwargs.get('name')
         return Continent.objects.get(pk=name)
 
-
     def resolve_all_countries(self, info, *args, **kwargs):
         return Country.objects.select_related('continent').all()
     def resolve_country(self, info, *args,  **kwargs):
@@ -130,8 +129,17 @@ class Query(object):
             return Park.objects.select_related('city_or_country').all()
     """
     #lastthoughts make city_or_country field related probably crate a new field or class or can the front end construct a query that checks if city or country was passed in then determine what to do or just query for mesum set directly from county or city
-    """
     def resolve_all_museums(self, info, *args, **kwargs):
-        return Museum.objects.select_related('city_or_country').all()
-    """
 
+        """
+        if Museum.objects.select_related("city").all():
+            return Museum.objects.select_related("city").all()
+        if Museum.objects.select_related("country").all():
+            return Museum.objects.select_related("country").all()
+        """
+        return Museum.objects.select_related("country").all(), Museum.objects.select_related("city").all()
+
+
+    def resolve_museums(self, info, *args, **kwargs):
+            name = kwargs.get('name')
+            return Museum.objects.get(pk=name)

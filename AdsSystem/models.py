@@ -8,28 +8,28 @@ from django.utils import timezone
 class AdsError(Exception):
     pass
 
-class AdOwner(models.Model):
-    name = models.CharField(primary_key=True,unique=True)
-    address  = models.TextField()
-
 class Ads(models.Model):
     title = models.CharField(max_length=250,primary_key=True)
     description = models.TextField()
-    start_date = models.DateTimeField(default=timezone.now())
-    stop_date = models.DateTimeField()
-    owner = models.ForeignKey(AdOwner, on_delete=models.CASCADE)
-    def is_valid(self):
+    start_date = models.DateField(default=timezone.now().date())
+    stop_date = models.DateField()
+    owner = models.CharField(max_length=999,verbose_name="owner of ad")
+    phone_number = models.IntegerField(max_length=11)
+    email = models.EmailField()
+    duration = models.DurationField()
+    approved = models.BooleanField(default=False)
+
+    def has_expired(self):
         """
-        This checks if a particular ad is valid.So admins can know when to take out an ad
+        This checks if a particular has expired.So admins can know when to take out an ad
         :return: Bool
         """
         now = timezone.now()
         return now < self.stop_date
 
-    is_valid.admin_order_field = "stop_date"
-    is_valid.boolean = True
-    is_valid.short_description = "Is Ad still valid?"
-
+    has_expired.admin_order_field = "stop_date"
+    has_expired.boolean = True
+    has_expired.short_description = "Has Ad expired?"
 
     def save(self, *args, **kwargs):
         if self.stop_date < self.start_date:

@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from citilamp.models import *
+from citilamp.models import (Continent, Country, StateProvince, City, Park, Museum, TouristCenter, Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach)
 
 class TravelChoicesEnum(graphene.Enum):
     air = "Air"

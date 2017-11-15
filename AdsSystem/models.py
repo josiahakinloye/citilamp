@@ -3,6 +3,8 @@ from datetime import date
 from django.db import models
 from django.forms import ModelForm
 # Create your models here.
+from django.forms.widgets import Input
+
 
 class AdsError(Exception):
     pass
@@ -16,7 +18,6 @@ class Ads(models.Model):
     #todo use regex on client side to make sure interger phone number conforms to phone number
     owner_phone_number = models.IntegerField()
     owner_email = models.EmailField()
-    duration = models.DurationField()
     approved = models.BooleanField(default=False)
 
     def has_expired(self):
@@ -40,8 +41,14 @@ class Ads(models.Model):
     def __str__(self):
         return self.title + "by"+ self.owner_name
 
+class DATEINPUT(Input):
+    input_type = 'date'
 
 class NewAdsForm(ModelForm):
     class Meta:
         model = Ads
         exclude = ['approved']
+        widgets = {
+            'start_date': DATEINPUT,
+            'stop_date' : DATEINPUT
+        }

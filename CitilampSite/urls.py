@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^graphiql', include('django_graphiql.urls')),
     url(r'^graphql', GraphQLView.as_view(graphiql=True,schema=schema)),
+    url(r'',include('AdsSystem.urls'))
 ]

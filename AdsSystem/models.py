@@ -1,12 +1,12 @@
-from datetime import date
 import re
+from datetime import date
 
 from django.db import models
 from django.forms import ModelForm, forms, TextInput
 # Create your models here.
 from django.forms.widgets import Input
 
-
+#todo make has expired work
 class AdsError(Exception):
     pass
 
@@ -19,7 +19,8 @@ class Ads(models.Model):
     owner_phone_number = models.IntegerField()
     owner_email = models.EmailField()
     approved = models.BooleanField(default=False)
-
+    class Meta:
+        verbose_name_plural =  'AdS'
     def has_expired(self):
         """
         This checks if a particular has expired.So admins can know when to take out an ad

@@ -1,7 +1,8 @@
 from datetime import date
+import re
 
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, forms, TextInput
 # Create your models here.
 from django.forms.widgets import Input
 
@@ -15,7 +16,6 @@ class Ads(models.Model):
     start_date = models.DateField(default=date.today)
     stop_date = models.DateField()
     owner_name = models.CharField(max_length=999,verbose_name="owner of ad")
-    #todo use regex on client side to make sure interger phone number conforms to phone number
     owner_phone_number = models.IntegerField()
     owner_email = models.EmailField()
     approved = models.BooleanField(default=False)
@@ -44,11 +44,25 @@ class Ads(models.Model):
 class DATEINPUT(Input):
     input_type = 'date'
 
+
+def is_this_a_valid_phoneNumber(number):
+    """
+    Validates this is a phone number
+    :param number: Str note if zero is first digit it is removed ie 070xxx becomes 70xxx
+    :return: Match object which is none if match fails
+    """
+    return re.match(r"^\d{10}$", number)
+
 class NewAdsForm(ModelForm):
     class Meta:
         model = Ads
         exclude = ['approved']
         widgets = {
             'start_date': DATEINPUT,
-            'stop_date' : DATEINPUT
+            'stop_date' : DATEINPUT,
         }
+    def clean_owner_phone_number(self):
+        phone_number = str(self.cleaned_data['owner_phone_number'])
+        if not is_this_a_valid_phoneNumber(phone_number):
+            raise forms.ValidationError("Phone number is not valid ensure it is a 10 digit number with no extra characters befor or after it")
+        return self.cleaned_data['owner_phone_number']

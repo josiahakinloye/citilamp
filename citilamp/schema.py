@@ -4,6 +4,9 @@ from graphene_django.types import DjangoObjectType
 from citilamp.models import (Continent, Country, StateProvince, City, Park, Museum, TouristCenter, Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach)
 
 class TravelChoicesEnum(graphene.Enum):
+    """
+    For travel choices ... Since graphql does not handle enums well
+    """
     air = "Air"
     plane = "Plane"
     bus = "Bus"

@@ -19,6 +19,7 @@ class Ads(models.Model):
     owner_phone_number = models.IntegerField()
     owner_email = models.EmailField()
     approved = models.BooleanField(default=False)
+
     class Meta:
         verbose_name_plural =  'AdS'
     def has_expired(self):

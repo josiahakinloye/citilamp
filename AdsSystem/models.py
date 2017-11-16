@@ -8,9 +8,15 @@ from django.forms.widgets import Input
 
 
 class AdsError(Exception):
+    """
+    Exception class for Anything realting to ads
+    """
     pass
 
 class Ads(models.Model):
+    """
+    Ads model
+    """
     title = models.CharField(max_length=250,primary_key=True)
     description = models.TextField()
     start_date = models.DateField(default=date.today)
@@ -55,6 +61,9 @@ def is_this_a_valid_phoneNumber(number):
     return re.match(r"^\d{10}$", number)
 
 class NewAdsForm(ModelForm):
+    """
+    Form that maps to the ad model
+    """
     class Meta:
         model = Ads
         exclude = ['approved']

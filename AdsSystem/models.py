@@ -27,9 +27,8 @@ class Ads(models.Model):
         :return: Bool
         """
 
-        return date.today() < self.stop_date
+        return date.today() >= self.stop_date
 
-    has_expired.admin_order_field = "stop_date"
     has_expired.boolean = True
     has_expired.short_description = "Has Ad expired?"
 

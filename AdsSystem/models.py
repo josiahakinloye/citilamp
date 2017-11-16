@@ -6,7 +6,7 @@ from django.forms import ModelForm, forms, TextInput
 # Create your models here.
 from django.forms.widgets import Input
 
-#todo make has expired work
+
 class AdsError(Exception):
     pass
 
@@ -29,7 +29,7 @@ class Ads(models.Model):
         """
 
         return date.today() >= self.stop_date
-
+    has_expired.admin_order_field = 'start_date'
     has_expired.boolean = True
     has_expired.short_description = "Has Ad expired?"
 
@@ -65,5 +65,5 @@ class NewAdsForm(ModelForm):
     def clean_owner_phone_number(self):
         phone_number = str(self.cleaned_data['owner_phone_number'])
         if not is_this_a_valid_phoneNumber(phone_number):
-            raise forms.ValidationError("Phone number is not valid ensure it is a 10 digit number with no extra characters befor or after it")
+            raise forms.ValidationError("Phone number is not valid ensure it is a 10 digit number")
         return self.cleaned_data['owner_phone_number']

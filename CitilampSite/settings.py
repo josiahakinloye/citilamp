@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'citilamp.apps.CitilampConfig',
     'AdsSystem.apps.AdsSystemConfig',
 ]
+GRAPHENE = {
+    'SCHEMA': 'CitilampSite.schema.schema',
+    'SCHEMA_OUTPUT': 'schema.json'  # defaults to schema.json
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

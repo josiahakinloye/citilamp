@@ -2,7 +2,6 @@
 This module contains everything that has to do with weather
 """
 
-
 from apixu.client import ApixuClient #weather api
 import arrow #for time manipulation
 
@@ -44,5 +43,6 @@ def return_stuff(forecast):
 
 
 if __name__ == "__main__":
-    l = get_weather_forecast_comparison()
-    print(type(l))
+    weather_comparison = get_weather_forecast_comparison()
+    for comparison in weather_comparison:
+        print (comparison)

@@ -41,11 +41,23 @@ INSTALLED_APPS = [
     'graphene_django',
     'citilamp.apps.CitilampConfig',
     'AdsSystem.apps.AdsSystemConfig',
+    'djmoney_rates',
 ]
+
+#graqhql related
 GRAPHENE = {
     'SCHEMA': 'CitilampSite.schema.schema',
-    'SCHEMA_OUTPUT': 'schema.json'  # defaults to schema.json
+    'SCHEMA_OUTPUT': 'schema.json'
 }
+
+#foreign exchange api
+DJANGO_MONEY_RATES = {
+    'DEFAULT_BACKEND': 'djmoney_rates.backends.OpenExchangeBackend',
+    'OPENEXCHANGE_URL': 'http://openexchangerates.org/api/latest.json',
+    'OPENEXCHANGE_APP_ID': '1a4a43cc9b274f2884e120cd54c827c9',
+    'OPENEXCHANGE_BASE_CURRENCY': 'USD',
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

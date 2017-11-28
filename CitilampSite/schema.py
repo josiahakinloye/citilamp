@@ -30,14 +30,14 @@ class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
         return list(weatherComparison)
 
     convert_currency = graphene.Int(currency_from=graphene.String(), currency_to=graphene.String(),
-                                        quantity=graphene.Int())
+                                        amount=graphene.Int())
 
 
     def resolve_convert_currency(self, info, *args, **kwargs):
         currency_from = kwargs.get('currency_from')
         currency_to = kwargs.get('currency_to')
-        quantity = kwargs.get('quantity')
-        return convertCurrency(currency_from, currency_to, quantity)
+        amount = kwargs.get('amount')
+        return convertCurrency(currency_from, currency_to, amount)
 
 
 schema = graphene.Schema(query=Query)

@@ -28,8 +28,10 @@ class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
         else:
             weatherComparison = get_weather_forecast_comparison(user_city=user_city, explored_city=explored_city)
         return list(weatherComparison)
+
     convert_currency = graphene.Int(currency_from=graphene.String(), currency_to=graphene.String(),
                                         quantity=graphene.Int())
+
 
     def resolve_convert_currency(self, info, *args, **kwargs):
         currency_from = kwargs.get('currency_from')

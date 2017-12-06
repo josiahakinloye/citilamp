@@ -1,18 +1,12 @@
-from django.shortcuts import render
-
-# Create your views here.
 from urllib.parse import quote_plus
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect, Http404, request
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from .models import Post
-
-
-from django.views.generic import DetailView
 
 
 class PostDetailView(DetailView):
@@ -29,16 +23,9 @@ class PostDetailView(DetailView):
         context['share_string'] = quote_plus(instance.content)
         return context
 
-
-# in urls.py --> PostDetailView.as_view() instead of post_detail
-
-
-
-
-
 def post_list(request):
     today = timezone.now().date()
-    queryset_list = Post.objects.active()  # .order_by("-timestamp"
+    queryset_list = Post.objects.active().order_by("-timestamp")
 
     query = request.GET.get("q")
     if query:

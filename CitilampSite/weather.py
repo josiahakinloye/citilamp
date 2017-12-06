@@ -12,8 +12,8 @@ weather_client = ApixuClient(weather_api_key)
 def get_weather_forecast_comparison(user_city="lagos", explored_city="london", days=7):
     """
     Compares the weather forecast of two cities passed in
-    :param user_city: String The city the user in browsing from , this is to be obtained on the front end with the Html
-    :param explored_city: String The city the user is exploring ie the city the user is viewing on the website
+    :param user_city: String The city the author in browsing from , this is to be obtained on the front end with the Html
+    :param explored_city: String The city the author is exploring ie the city the author is viewing on the website
     :param days: Int Number of days you want to compare weather forecast for
     :return: Zip object containing info of weather comparision
     """

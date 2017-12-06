@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'citilamp.apps.CitilampConfig',
     'AdsSystem.apps.AdsSystemConfig',
-    'djmoney_rates',
+    'blog.apps.BlogConfig'
 ]
 
 #graqhql related

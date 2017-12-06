@@ -23,7 +23,7 @@ def convertCurrency(currency_from, currency_to, amount):
     convert_key= currency_from+"_"+currency_to
     try:
         current_rate = res[convert_key]['val']
-    except:
+    except KeyError:
         raise Exception("Api call was unsuccessful")
     return current_rate * amount
 

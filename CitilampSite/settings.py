@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import cloudinary
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -50,13 +51,12 @@ GRAPHENE = {
     'SCHEMA_OUTPUT': 'schema.json'
 }
 
-#foreign exchange api
-DJANGO_MONEY_RATES = {
-    'DEFAULT_BACKEND': 'djmoney_rates.backends.OpenExchangeBackend',
-    'OPENEXCHANGE_URL': 'http://openexchangerates.org/api/latest.json',
-    'OPENEXCHANGE_APP_ID': '1a4a43cc9b274f2884e120cd54c827c9',
-    'OPENEXCHANGE_BASE_CURRENCY': 'USD',
-}
+
+cloudinary.config(
+    cloud_name = "dvjtax5tb" ,
+    api_key = "618235163161715",
+    api_secret = "dyCFYNZL5AZZfupauesxOYiQEbg"
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

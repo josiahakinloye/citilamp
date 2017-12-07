@@ -5,6 +5,7 @@ This module contains everything that has to do with weather
 from apixu.client import ApixuClient #weather api
 import arrow #for time manipulation
 
+#todo:remove chris's credentials
 weather_api_key = '89189bbae09641d89b3181117172511'
 
 weather_client = ApixuClient(weather_api_key)

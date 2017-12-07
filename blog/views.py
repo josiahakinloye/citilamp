@@ -8,6 +8,7 @@ from django.views.generic import DetailView
 
 from .models import Post
 
+cloudinary_url = "https://res.cloudinary.com/dvjtax5tb/"
 
 class PostDetailView(DetailView):
     template_name = 'post_detail.html'
@@ -46,7 +47,6 @@ def post_list(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         queryset = paginator.page(paginator.num_pages)
-
     context = {
         "object_list": queryset,
         "title": "List",

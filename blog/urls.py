@@ -7,5 +7,5 @@ from .views import (
 
 urlpatterns = [
 	url(r'^$', post_list, name='list'),
-    url(r'^(?P<slug>[\w-]+)/$', PostDetailView.as_view(), name='detail'),
+	url(r'^(?P<slug>[\w-]+)/$', PostDetailView.as_view(), name='detail'),
 ]

@@ -6,7 +6,7 @@ from .models import Ads
 
 class AdsType(DjangoObjectType):
     """
-    Graphene model type that maps to the model property given in its meta class
+    Type that maps to the Ads  model
     """
     class Meta:
         """
@@ -18,8 +18,9 @@ class AdsType(DjangoObjectType):
 
 class Query(object):
     """
-    This contains graphql queries and their respective resolver functions
+    Graphql query for the ads model
     """
+    # a list of approved ads
     approved_ads = graphene.List(AdsType)
 
     def resolve_approved_ads(self, info, *args, **kwargs):

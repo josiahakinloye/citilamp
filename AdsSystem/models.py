@@ -16,6 +16,7 @@ class AdsError(Exception):
 class Ads(models.Model):
     """
     Ads model
+    :var title the title of
     """
     title = models.CharField(max_length=250,primary_key=True)
     description = models.TextField()

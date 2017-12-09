@@ -8,7 +8,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
 
-
+from .utils import get_read_time
 from .utils import unique_slug_generator
 
 
@@ -35,6 +35,7 @@ class Post(models.Model):
     content = models.TextField()
     draft = models.BooleanField(default=False)
     publish = models.DateField(auto_now=False, auto_now_add=False)
+    read_time = models.TimeField(blank=True, null=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     image = CloudinaryField('image')
@@ -47,16 +48,14 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("blog:detail", kwargs={"slug": self.slug})
 
-    def save(self, *args, **kwargs):
-        if self.publish < date.today():
-            raise Exception("Can not  save articles to be published in the past")
-        else:
-            super(Post, self).save(*args, **kwargs)
     class Meta:
         ordering = ["-timestamp", "-updated"]
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+    read_time_var = get_read_time(html_string=instance.content)
+    instance.read_time = read_time_var
+
 
 pre_save.connect(pre_save_post_receiver, sender=Post)

@@ -4,7 +4,7 @@ import AdsSystem.schema as AdsSystemSchema
 import citilamp.schema as citilampschema
 from .weather import get_weather_forecast_comparison
 from .exchange import convertCurrency
-
+from .timeComparison import time_details_comparison
 
 class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
     """
@@ -39,5 +39,11 @@ class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
         amount = kwargs.get('amount')
         return convertCurrency(currency_from, currency_to, amount)
 
+
+    time_comparison = graphene.Field(graphene.String, places=graphene.List(graphene.String))
+
+    def resolve_time_comparison(self, info, *args, **kwargs):
+        places_var = kwargs.get('places')
+        return time_details_comparison(places=places_var)
 
 schema = graphene.Schema(query=Query)

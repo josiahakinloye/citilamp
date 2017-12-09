@@ -35,5 +35,4 @@ def count_words(html_string):
 def get_read_time(html_string):
     count = count_words(html_string)
     read_time_min = math.ceil(count/200.0) # assuming a reading speed of 200 words per minute
-    read_time = str(datetime.timedelta(minutes=read_time_min))
-    return read_time
+    return read_time_min

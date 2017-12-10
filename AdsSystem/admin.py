@@ -9,4 +9,4 @@ class AdsAdmin(admin.ModelAdmin):
     behaves at the admin end here
     """
     list_display= ('description', 'start_date','stop_date', 'owner_name', 'owner_phone_number','owner_email','approved', 'has_expired',)
-    list_filter = ('stop_date',)
+    list_filter = ('stop_date', 'approved',)

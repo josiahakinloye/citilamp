@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
-from .models import NewAdsForm
+from .forms import NewAdForm
+
+
 # Create your views here.
 
 def new_ad(request):
@@ -10,9 +12,9 @@ def new_ad(request):
     :return:
     """
     if request.method == "POST":
-        form = NewAdsForm(request.POST)
+        form = NewAdForm(request.POST)
         if form.is_valid():
             form.save()
     else:
-        form = NewAdsForm()
+        form = NewAdForm()
     return render(request,'newad.html', {'form': form} )

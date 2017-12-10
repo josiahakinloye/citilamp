@@ -24,7 +24,7 @@ def convertCurrency(currency_from, currency_to, amount):
     try:
         current_rate = res[convert_key]['val']
     except KeyError:
-        raise Exception("Api call was unsuccessful")
+        raise Exception("Could not get current rate maybe Api call was unsuccessful or the api response has been changed")
     return current_rate * amount
 
 if __name__  == "__main__":

@@ -10,8 +10,6 @@ class NewsApiError(Exception):
     pass
 
 
-
-
 def get_some_news_info(headline_news):
     """
     This gets some attributes from the payload returned by calling the news_api above

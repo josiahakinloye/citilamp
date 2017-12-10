@@ -117,6 +117,7 @@ class CountryAndCityAttractions(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE,blank=True,null=True)
     address = models.TextField(blank=True)
     website = models.URLField(blank=True)
+
     #what can be done in this place
     details = models.TextField(blank=True)
 
@@ -127,11 +128,6 @@ class CountryAndCityAttractions(models.Model):
             if self.city and self.country:
                 raise Exception("Attraction can only be tied to city or country not both")
             else:
-                if self.city:
-                    self.city_or_country = models.ForeignKey(self.city, on_delete=models.CASCADE, blank=True, null=True)
-                if self.country:
-                    self.city_or_country = models.ForeignKey(self.country, on_delete=models.CASCADE, blank=True, null=True)
-                print (self.city_or_country)
                 super(CountryAndCityAttractions, self).save(*args, **kwargs)
         else:
             raise Exception("Attraction must be linked to a country or a city")

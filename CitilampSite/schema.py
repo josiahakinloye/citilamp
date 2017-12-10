@@ -2,10 +2,10 @@ import graphene
 
 import AdsSystem.schema as AdsSystemSchema
 import citilamp.schema as citilampschema
-from CitilampSite.utils.exchange import convertCurrency
-from CitilampSite.utils.timeComparison import time_details_comparison
-from CitilampSite.utils.weather import get_weather_forecast_comparison
-
+from .utils.exchange import convertCurrency
+from .utils.timeComparison import time_details_comparison
+from .utils.weather import get_weather_forecast_comparison
+from .utils.distance import get_distance
 
 class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
     """
@@ -41,10 +41,17 @@ class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
         return convertCurrency(currency_from, currency_to, amount)
 
 
-    time_comparison = graphene.Field(graphene.String, places=graphene.List(graphene.String))
+    time_comparison = graphene.String(places=graphene.List(graphene.String))
 
     def resolve_time_comparison(self, info, *args, **kwargs):
         places_var = kwargs.get('places')
         return time_details_comparison(places=places_var)
+
+    distance_details = graphene.String(origin=graphene.String(),destination=graphene.String())
+
+    def resolve_distance_details(self, info, *args, **kwargs):
+        origin = kwargs.get('origin')
+        destination = kwargs.get('destination')
+        return  get_distance(origin, destination)
 
 schema = graphene.Schema(query=Query)

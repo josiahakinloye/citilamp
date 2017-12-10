@@ -2,9 +2,10 @@ import graphene
 
 import AdsSystem.schema as AdsSystemSchema
 import citilamp.schema as citilampschema
-from .weather import get_weather_forecast_comparison
-from .exchange import convertCurrency
-from .timeComparison import time_details_comparison
+from CitilampSite.utils.exchange import convertCurrency
+from CitilampSite.utils.timeComparison import time_details_comparison
+from CitilampSite.utils.weather import get_weather_forecast_comparison
+
 
 class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
     """

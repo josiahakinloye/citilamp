@@ -177,7 +177,7 @@ class Query(object):
         name = kwargs.get('name')
         return City.objects.get(pk=name)
 
-
+    # todo:can this be changed to try and still work
     def resolve_all_parks(self, info, *args, **kwargs):
         #Since park is related to both city and country
         if Park.objects.select_related("city").all():

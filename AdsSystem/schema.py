@@ -4,6 +4,7 @@ from graphene_django import DjangoObjectType
 
 from .models import Ads
 
+
 class AdsType(DjangoObjectType):
     """
     Type that maps to the Ads  model

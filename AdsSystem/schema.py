@@ -20,7 +20,7 @@ class Query(object):
     """
     Graph ql query for the ads model
     """
-    # a list of approved ads
+    # a list of valid ads
     valid_ads = graphene.List(AdsType)
 
     def resolve_valid_ads(self, info, *args, **kwargs):

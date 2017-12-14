@@ -8,7 +8,6 @@ from django.views.generic import DetailView
 
 from .models import Post
 
-cloudinary_url = "https://res.cloudinary.com/dvjtax5tb/"
 
 class PostDetailView(DetailView):
     template_name = 'post_detail.html'
@@ -23,6 +22,7 @@ class PostDetailView(DetailView):
         instance = context['object']
         context['share_string'] = quote_plus(instance.content)
         return context
+
 
 def post_list(request):
     today = timezone.now().date()

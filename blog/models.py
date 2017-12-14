@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-from datetime import date
 
 from cloudinary.models import CloudinaryField
 from django.conf import settings
@@ -51,6 +50,7 @@ class Post(models.Model):
     class Meta:
         ordering = ["-timestamp", "-updated"]
 
+#do this before saving an instance of  the model
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)

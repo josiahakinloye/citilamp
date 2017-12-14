@@ -14,7 +14,7 @@ class Ads(models.Model):
     """
     Ads model
     """
-    title = models.CharField(max_length=250,primary_key=True,verbose_name="stufff hbjkl")
+    title = models.CharField(max_length=250,primary_key=True)
     description = models.TextField()
 
     # for the duration of ad

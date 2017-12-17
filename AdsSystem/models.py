@@ -51,5 +51,5 @@ class Ads(models.Model):
             raise AdsError("Ensure start date is not less than today and stop date is greater than start date")
 
     def __str__(self):
-        return self.title + "by"+ self.owner_name
+        return self.title + " by "+ self.owner_name
 

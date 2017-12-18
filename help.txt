@@ -1,0 +1,5 @@
+This is the first thing you need to read
+This project was built and tested only with python 3.5.2, ensure you have the right version of python
+Run setup.sh to install all the necessary dependencies
+Note: all app graphql schema are in the apps shema.py file
+The AdsSystem app contains everything that deals with Ads(models, schema etc)

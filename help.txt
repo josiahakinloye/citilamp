@@ -10,9 +10,11 @@ What the app contain:
         slug generator and getting the read time for blog posts
     Citilamp app contains models and schema of country , city,parks etc.
     CitilampSite is the actual django project.
-        It's utils package contain 5 .py files:
+        Its utils package contain 5 .py files:
             distance py: the module that contains code for calculating distance
             exchange.py:this module contains code for currency conversion
             news.py: this module contains code for getting news using a news api
             timeComparison.py: this module contains code for comparing time between places
             weather.py: this module contains code for weather comparison etc.
+
+        Its tripAdvisor package contains code that displays the risks associated with travelling to a particular country.

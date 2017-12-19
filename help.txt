@@ -6,6 +6,8 @@ Note: All app graphql schema are in the apps' schema.py file
 What the app contain:
     The AdsSystem app contains everything that deals with Ads(models, schema etc)
     The blog contains everything to do with the blog
+        - It's utils.py file contains code for some helpful functionality like
+        slug generator and getting the read time for blog posts
     Citilamp app contains models and schema of country , city,parks etc.
     CitilampSite is the actual django project.
         It's utils package contain 5 .py files:

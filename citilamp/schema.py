@@ -148,6 +148,17 @@ def make_queries(typeToMakeQueryFieldsFor):
     return graphene.List(typeToMakeQueryFieldsFor), graphene.Field(typeToMakeQueryFieldsFor, name=graphene.String())
 
 
+def city_country_set(model):
+
+    @property
+    def get_objects(model):
+        return model.objects
+
+    try:
+        return get_objects.select_related("city").all()
+    except:
+        return get_objects.select_related("country").all()
+
 class Query(object):
     """
     Class that contains all resolver functions for graph ql queries relating to core  citilamp models
@@ -177,7 +188,7 @@ class Query(object):
 
     all_partner_tags, partner_tag = make_queries(PartnerTagType)
 
-    # location : city,country. String used to query address and areas of opertion fields eg.Ikeja, Lagos or Usa
+    # location : city,country. String used to query address and areas of operation fields eg.Ikeja, Lagos or Usa
     partners = graphene.List(PartnerType, area=graphene.String(), tag=graphene.String())
 
     # Graphql resolver functions
@@ -212,76 +223,51 @@ class Query(object):
         name = kwargs.get('name')
         return City.objects.get(pk=name)
 
-    # todo:can this be changed to try and still work
     def resolve_all_parks(self, info, *args, **kwargs):
-        #Since park is related to both city and country
-        if Park.objects.select_related("city").all():
-            return Park.objects.select_related("city").all()
-        if Park.objects.select_related("country").all():
-            return Park.objects.select_related("country").all()
+        city_country_set(Park)
 
     def resolve_park(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return Park.objects.get(pk=name)
 
     def resolve_all_tourist_centers(self, info, *args, **kwargs):
-        if TouristCenter.objects.select_related("city").all():
-            return TouristCenter.objects.select_related("city").all()
-        if TouristCenter.objects.select_related("country").all():
-            return TouristCenter.objects.select_related("country").all()
+        city_country_set(TouristCenter)
 
     def resolve_tourist_center(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return TouristCenter.objects.get(pk=name)
 
-
-
     def resolve_all_beaches(self, info, *args, **kwargs):
-        if Beach.objects.select_related("city").all():
-            return Beach.objects.select_related("city").all()
-        if Beach.objects.select_related("country").all():
-            return Beach.objects.select_related("country").all()
+        city_country_set(Beach)
 
     def resolve_beach(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return Beach.objects.get(pk=name)
 
-    def resolve_all_museums(self, info, *args, **kwargs):
-        if Museum.objects.select_related("city").all():
-            return Museum.objects.select_related("city").all()
-        if Museum.objects.select_related("country").all():
-            return Museum.objects.select_related("country").all()
 
+    def resolve_all_museums(self, info, *args, **kwargs):
+        city_country_set(Museum)
 
     def resolve_museum(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return Museum.objects.get(pk=name)
 
     def resolve_all_galleries(self, info, *args, **kwargs):
-        if Gallery.objects.select_related("city").all():
-            return Gallery.objects.select_related("city").all()
-        if Gallery.objects.select_related("country").all():
-            return Gallery.objects.select_related("country").all()
+        city_country_set(Gallery)
 
     def resolve_gallery(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return Gallery.objects.get(pk=name)
 
     def resolve_all_markets_tradingcenters_shops(self, info, *args, **kwargs):
-        if MarketTradingcenterSHOP.objects.select_related("city").all():
-            return MarketTradingcenterSHOP.objects.select_related("city").all()
-        if MarketTradingcenterSHOP.objects.select_related("country").all():
-            return MarketTradingcenterSHOP.objects.select_related("country").all()
+        city_country_set(MarketTradingcenterSHOP)
 
     def resolve_market_tradingcenter_shop(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return MarketTradingcenterSHOP.objects.get(pk=name)
 
     def resolve_all_historical_attractions(self, info, *args, **kwargs):
-        if HistoricalAttraction.objects.select_related("city").all():
-            return HistoricalAttraction.objects.select_related("city").all()
-        if HistoricalAttraction.objects.select_related("country").all():
-            return HistoricalAttraction.objects.select_related("country").all()
+        city_country_set(HistoricalAttraction)
 
     def resolve_historical_attraction(self, info, *args, **kwargs):
         name = kwargs.get('name')

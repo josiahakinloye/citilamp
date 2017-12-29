@@ -183,7 +183,7 @@ class Partner(models.Model):
     areas_of_operation= models.TextField(verbose_name="Areas partner operates in or out of.")
 
     def __str__(self):
-        return self.name + " with tag " + self.tag.name +  " located at " + self.address
+        return self.name + " with tag " + self.tag.name
 
     class Meta:
         ordering = ['name', 'tag']

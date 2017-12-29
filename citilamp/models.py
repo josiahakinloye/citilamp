@@ -171,7 +171,7 @@ class PartnerTag(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name_plural = "Tags"
+        verbose_name_plural = "Partner Tags"
 
 
 class Partner(models.Model):
@@ -182,7 +182,7 @@ class Partner(models.Model):
     address = models.TextField(verbose_name="Business address of partner.")
 
     def __str__(self):
-        return self.name + "with tag " + self.tag +  "located at " + self.address
+        return self.name + "with tag " + self.tag.name +  "located at " + self.address
 
     class Meta:
         ordering = ['name', 'tag']

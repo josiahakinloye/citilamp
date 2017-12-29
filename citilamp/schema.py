@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 import graphene
 from graphene_django.types import DjangoObjectType
 
@@ -27,6 +29,7 @@ class CountryType(DjangoObjectType):
     used to graph ql to understand the model's fields
     """
     entry_requirement = TravelChoicesEnum()
+
     class Meta:
         model = Country
 
@@ -125,20 +128,18 @@ class PartnerType(DjangoObjectType):
         model = Partner
 
 
-
 def makeQueries(typeToMakeQueryFieldsFor):
     """
     Make graphql queries for the type passed in
     :param typeToMakeQueryFieldsFor: Class
-    :return:
+    :return: tuple graphene list and a graphene field
     """
     return graphene.List(typeToMakeQueryFieldsFor), graphene.Field(typeToMakeQueryFieldsFor, name=graphene.String())
 
 
 class Query(object):
     """
-    Class that contains all resolver functions for graph ql queries relating to citilamp models
-    Continent, Country, StateProvince, City, Park, Museum, TouristCenter, Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach
+    Class that contains all resolver functions for graph ql queries relating to core  citilamp models
     """
 
     all_continents, continent = makeQueries(ContinentType)
@@ -164,6 +165,8 @@ class Query(object):
     all_historical_attractions, historical_attraction = makeQueries(HistoricalAttractionType)
 
     all_partner_tags, partner_tag = makeQueries(PartnerTagType)
+
+    partners = graphene.List(PartnerType, location=graphene.String(), tag=graphene.String())
 
     def resolve_all_continents(self, info, *args, **kwargs):
         return Continent.objects.all()
@@ -270,3 +273,16 @@ class Query(object):
     def resolve_historical_attraction(self, info, *args, **kwargs):
         name = kwargs.get('name')
         return HistoricalAttraction.objects.get(pk=name)
+
+    def resolve_all_partner_tags(self, info, *args, **kwargs):
+        return PartnerTag.objects.all()
+
+    def resolve_partner_tag(self, info, *args, **kwargs):
+        name = kwargs.get('name')
+        return PartnerTag.objects.get(pk=name)
+
+    def resolve_partners(self, info, *args, **kwargs):
+        location = kwargs.get('location')
+        tag =  kwargs.get('tag')
+        partners_list = Partner.objects.filter(tag=tag).filter(Q(address__icontains=location))
+        return partners_list

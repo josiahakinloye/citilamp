@@ -1,11 +1,10 @@
 from django.contrib import admin
 
-from citilamp.models import (Continent, Country, StateProvince, City, Park, Museum, TouristCenter ,
-                              Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach)
+from citilamp.models import (Beach, City, Continent, Country, Gallery, HistoricalAttraction,MarketTradingcenterSHOP,
+                             Museum, Park, Partner, PartnerTag, StateProvince,TouristCenter)
 
-models_to_register = (Continent, Country, StateProvince, City, Park, Museum, TouristCenter ,Gallery,
-                      MarketTradingcenterSHOP, HistoricalAttraction, Beach)
-
+models_to_register = (Beach, City, Continent, Country, Gallery, HistoricalAttraction,MarketTradingcenterSHOP,
+                             Museum, Park, Partner, PartnerTag, StateProvince,TouristCenter)
 
 class CitilampBaseAdmin(admin.ModelAdmin):
     search_fields = ('name',)

@@ -156,3 +156,35 @@ class MarketTradingcenterSHOP(CountryAndCityAttractions):
         verbose_name_plural = "Markets, Trading centers and Shops "
 class HistoricalAttraction(CountryAndCityAttractions):
     pass
+
+
+class PartnerTag(models.Model):
+    """
+    A database of partner tags like hotels, restaurants.
+    To help know what type of business partners are into.
+    """
+    name = models.CharField(primary_key=True, max_length=40,  verbose_name="Name of tag")
+    description = models.TextField(verbose_name="Description of tag")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = "Partner Tags"
+
+
+class Partner(models.Model):
+    name = models.TextField(verbose_name="Partner's business name")
+    tag = models.ForeignKey(PartnerTag, on_delete=models.CASCADE, verbose_name="The partner's tag.")
+    website = models.URLField(blank=True, null=True, verbose_name="The partner's websites url.")
+    description = models.TextField(verbose_name="More specific details on what the partner does.")
+    address = models.TextField(verbose_name="Business address of partner.")
+    areas_of_operation= models.TextField(verbose_name="Areas partner operates in or out of.")
+
+    def __str__(self):
+        return self.name + " with tag " + self.tag.name
+
+    class Meta:
+        ordering = ['name', 'tag']
+        verbose_name_plural = "Partners"

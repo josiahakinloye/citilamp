@@ -20,12 +20,12 @@ def get_weather_forecast_comparison(user_city="lagos", explored_city="london", d
     """
     user_city_forecast = weather_client.getForecastWeather(q=user_city, days=days)['forecast']['forecastday']
     explored_city_forecast = weather_client.getForecastWeather(q=explored_city, days=days)['forecast']['forecastday']
-    weather_forecast_comparison = zip(map(return_stuff, user_city_forecast), map(return_stuff, explored_city_forecast))
+    weather_forecast_comparison = zip(map(get_weather_info, user_city_forecast), map(get_weather_info, explored_city_forecast))
     return weather_forecast_comparison
 
 
 
-def return_stuff(forecast):
+def get_weather_info(forecast):
     """
     This returns a dictionary of relevant weather info
     :param forecast: List of weather info for a particular day
@@ -33,6 +33,7 @@ def return_stuff(forecast):
     """
     day_forecast = {}
     day_forecast['condition_text'] = forecast['day']['condition']['text']
+    #this icon is a url to an image that describes the weather condition
     day_forecast['condition_icon'] = forecast['day']['condition']['icon']
     day_forecast['max_temp'] = forecast['day']['maxtemp_c']
     day_forecast['min_temp'] = forecast['day']['mintemp_c']

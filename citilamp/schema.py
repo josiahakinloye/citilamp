@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from citilamp.models import (Continent, Country, StateProvince, City, Park, Museum, TouristCenter, Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach)
+from citilamp.models import (Continent, Country, StateProvince, City, Park, Museum, TouristCenter, Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach, Partner, PartnerTag)
 
 class TravelChoicesEnum(graphene.Enum):
     """
@@ -108,6 +108,24 @@ class HistoricalAttractionType(DjangoObjectType):
     class Meta:
         model = HistoricalAttraction
 
+class PartnerTagType(DjangoObjectType):
+    """
+    Type that
+    """
+
+    class Meta:
+        model = PartnerTag
+
+class PartnerType(DjangoObjectType):
+    """
+
+    """
+
+    class Meta:
+        model = Partner
+
+
+
 def makeQueries(typeToMakeQueryFieldsFor):
     """
     Make graphql queries for the type passed in
@@ -145,6 +163,7 @@ class Query(object):
 
     all_historical_attractions, historical_attraction = makeQueries(HistoricalAttractionType)
 
+    all_partner_tags, partner_tag = makeQueries(PartnerTagType)
 
     def resolve_all_continents(self, info, *args, **kwargs):
         return Continent.objects.all()

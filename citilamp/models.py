@@ -158,7 +158,7 @@ class HistoricalAttraction(CountryAndCityAttractions):
     pass
 
 
-class Tag(models.Model):
+class PartnerTag(models.Model):
     """
     A database of partner tags like hotels, restaurants.
     To help know what type of business partners are into.
@@ -175,22 +175,15 @@ class Tag(models.Model):
 
 
 class Partner(models.Model):
-    location_choices = (
-        ('Country', Country) ,
-        ('City', City) ,
-        ('State or Province', StateProvince)
-    )
-
-    name = models.TextField()
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name="The partner's tag.")
+    name = models.TextField(verbose_name="Partner's business name")
+    tag = models.ForeignKey(PartnerTag, on_delete=models.CASCADE, verbose_name="The partner's tag.")
     website = models.URLField(blank=True, null=True, verbose_name="The partner's websites url.")
     description = models.TextField(verbose_name="More specific details on what the partner does.")
-    location = models.CharField(max_length=250, choices=location_choices, verbose_name="Location of partner.")
     address = models.TextField(verbose_name="Business address of partner.")
 
     def __str__(self):
-        return self.name
+        return self.name + "with tag " + self.tag +  "located at " + self.address
 
     class Meta:
-        ordering = ['name', 'location']
+        ordering = ['name', 'tag']
         verbose_name_plural = "Partners"

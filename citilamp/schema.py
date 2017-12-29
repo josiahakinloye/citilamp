@@ -166,8 +166,10 @@ class Query(object):
 
     all_partner_tags, partner_tag = makeQueries(PartnerTagType)
 
-    partners = graphene.List(PartnerType, location=graphene.String(), tag=graphene.String())
+    # location : city,country of partner. used to query address and areas of opertion fields eg.Ikeja, Lagos
+    partners = graphene.List(PartnerType, area=graphene.String(), tag=graphene.String())
 
+    # Graphql resolver functions
     def resolve_all_continents(self, info, *args, **kwargs):
         return Continent.objects.all()
 
@@ -282,7 +284,7 @@ class Query(object):
         return PartnerTag.objects.get(pk=name)
 
     def resolve_partners(self, info, *args, **kwargs):
-        location = kwargs.get('location')
+        area = kwargs.get('area').replace(' ','')
         tag =  kwargs.get('tag')
-        partners_list = Partner.objects.filter(tag=tag).filter(Q(address__icontains=location))
+        partners_list = Partner.objects.filter(tag=tag).filter(Q(address__icontains=area) | Q(areas_of_operation__icontains=area))
         return partners_list

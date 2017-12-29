@@ -180,9 +180,10 @@ class Partner(models.Model):
     website = models.URLField(blank=True, null=True, verbose_name="The partner's websites url.")
     description = models.TextField(verbose_name="More specific details on what the partner does.")
     address = models.TextField(verbose_name="Business address of partner.")
+    areas_of_operation= models.TextField(verbose_name="Areas partner operates in or out of.")
 
     def __str__(self):
-        return self.name + "with tag " + self.tag.name +  "located at " + self.address
+        return self.name + " with tag " + self.tag.name +  " located at " + self.address
 
     class Meta:
         ordering = ['name', 'tag']

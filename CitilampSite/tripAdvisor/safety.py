@@ -19,21 +19,23 @@ def get_safety_status(percent):
     return status
 
 def get_safety_index(country, no_of_countries=163):
-    country_to_use = country.title()
     response = requests.get(global_peace_index_url)
     website = BeautifulSoup(response.text, 'html.parser')
     table_rows = website.select("table tr")
-    try:
-        country_details = [rows for rows in table_rows if rows.find(href=re.compile(country_to_use)) is not None]
-    except:
-        raise Exception("Can not find details for this country {}".format(country_to_use))
-    #pick only the  number
-    country_latest_index = re.search(r"\d+",[child for child in country_details[0].children][3].string).group()
+    country_details = [rows for rows in table_rows if rows.find(title=re.compile(country)) is not None]\
+                      or [rows for rows in table_rows if rows.find(title=re.compile(country.title())) is not None]
+    if country_details:
+        # pick only the number
+        country_latest_index = re.search(r"\d+",[child for child in country_details[0].children][3].string).group()
+    else:
+        raise Exception("Can not find details for this country {}".format(country))
 
     country_percentage = math.ceil((int(country_latest_index)/no_of_countries)*100)
     country_safety ={}
     country_safety['index']=country_latest_index
     country_safety['status'] = get_safety_status(country_percentage)
     return country_safety
+
 if __name__ == "__main__":
-    print (get_safety_index('Ireland'))
+    print (get_safety_index('Republic of the Congo'))
+    print(get_safety_index('nigeria'))

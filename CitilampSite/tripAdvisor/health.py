@@ -21,14 +21,14 @@ def traveler_info(res):
 
     website_data_p = [didts(child) for child in website_data.find_all(class_="traveler-disease")]
 
-    website_data_kl = [child.text for child in website_data.find_all(class_="traveler-findoutwhy"
+    website_data_kl = [child.get_text(strip=True) for child in website_data.find_all(class_="traveler-findoutwhy"
 )]
 
     return list(zip (website_data_p, website_data_kl))
 
 def child(l):
     new_diect = {}
-    new_diect[l[0][0]] = {'link':travel_tips_url+l[0][1],'info':l[1]}
+    new_diect[l[0][0]] = {'link':travel_tips_url+l[0][1], 'info':l[1]}
     return new_diect
 
 def get_health_for_countries(country):
@@ -41,10 +41,10 @@ def get_health_for_countries(country):
     lk = list( traveler_info(res))
 
     return  [child(you) for you in lk]
+
 def didts(child):
     disease = child.find('a')
-    if disease:
-        return  disease.text, disease.get('href')
+    return  disease.text, disease.get('href')
 
 if __name__ == "__main__":
     print (get_health_for_countries('Denmark'))

@@ -19,7 +19,7 @@ status_from_color = {
 world_risk_url = "https://en.wikipedia.org/wiki/List_of_countries_by_natural_disaster_risk"
 
 
-def get_safety_status(percent):
+def safety_status(percent):
     percent_to_use = int(percent)
     if percent_to_use in range(1, 19): status = "Very Safe"
     elif percent_to_use in range(19, 36): status = "Safe"
@@ -33,7 +33,7 @@ def get_safety_status(percent):
     return status
 
 
-def get_human_attack_safety_status(country, no_of_countries=163):
+def human_attack_safety_status(country, no_of_countries=163):
     response = requests.get(global_peace_index_url)
     website = BeautifulSoup(response.text, 'html.parser')
     table_rows = website.select("table tr")
@@ -49,11 +49,11 @@ def get_human_attack_safety_status(country, no_of_countries=163):
     country_percentage = math.ceil((int(country_latest_index)/no_of_countries)*100)
     country_safety ={}
     country_safety['index']=country_latest_index
-    country_safety['status'] = get_safety_status(country_percentage)
+    country_safety['status'] = safety_status(country_percentage)
     return country_safety
 
 
-def get_natural_disaster_safety_status(country):
+def natural_disaster_safety_status(country):
     res = requests.get(world_risk_url)
     website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
     country_a_element = website.find('a',text=country)
@@ -63,7 +63,8 @@ def get_natural_disaster_safety_status(country):
         if current_score_td.text:
             current_score_background = re.search(r'background:\w+',str(current_score_td)).group()
             current_score_color = current_score_background.lstrip('background:')
-            return {'status':status_from_color[current_score_color], 'index':parent_td.previous_sibling.previous_sibling.text}
+            return {'status_colour': current_score_color, 'status_text': status_from_color[current_score_color],
+                    'index': parent_td.previous_sibling.previous_sibling.text}
         else:
             logging.error('Current world risk index data could not be determined for {}'.format(country))
             return None
@@ -72,11 +73,11 @@ def get_natural_disaster_safety_status(country):
         return None
 
 
-def country_safety_stat(country):
+def get_country_safety_stats(country):
     safety_stat = {}
     safety_stat['name'] = country
-    safety_stat['natural_disaster_safety']  = get_natural_disaster_safety_status(country)
-    safety_stat['human_attack_safety'] =  get_human_attack_safety_status(country)
+    safety_stat['natural_disaster_safety']  = natural_disaster_safety_status(country)
+    safety_stat['human_attack_safety'] =  human_attack_safety_status(country)
 
     # to avoid run time error when looping
     for k,v in copy.deepcopy(safety_stat).items():
@@ -85,9 +86,9 @@ def country_safety_stat(country):
     return safety_stat
 
 if __name__ == "__main__":
-    print (get_human_attack_safety_status('Nigeria'))
-    print(get_natural_disaster_safety_status('Palestine'))
-    print(country_safety_stat('Nigeria'))
-    print(country_safety_stat('Bosnia and Herzegovina'))
-    print(country_safety_stat('Democratic Republic of the Congo'))
-    print(country_safety_stat('Vanuatu'))
+    print (human_attack_safety_status('Nigeria'))
+    print(natural_disaster_safety_status('Palestine'))
+    print(get_country_safety_stats('Nigeria'))
+    print(get_country_safety_stats('Bosnia and Herzegovina'))
+    print(get_country_safety_stats('Democratic Republic of the Congo'))
+    print(get_country_safety_stats('Vanuatu'))

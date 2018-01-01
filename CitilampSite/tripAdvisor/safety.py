@@ -111,10 +111,7 @@ def get_country_safety_stats(country):
     for k,v in copy.deepcopy(safety_stat).items():
         if v is None:
             del safety_stat[k]
-    if safety_stat:
-        return safety_stat
-    else:
-        return None
+    return safety_stat
 
 if __name__ == "__main__":
     print (human_attack_safety_status('Nigeria'))

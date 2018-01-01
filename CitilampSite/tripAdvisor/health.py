@@ -22,7 +22,7 @@ def disease_name_and_link(child):
 
 def traveler_advice(res):
     """
-    Get health ad
+    Advice data from website
     :param res: requests object gotten from passing traveler tips url to requests.get
     :return: zip object containing health advice for travelers
     """

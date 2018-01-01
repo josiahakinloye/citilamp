@@ -12,35 +12,38 @@ import requests
 global_peace_index_url = "https://en.wikipedia.org/wiki/Global_Peace_Index"
 
 status_from_color = {
-    "Green": "Very safe", "YellowGreen" : "Safe", "OrangeRed" : "Slightly Dangerous",
-    "Red" : "Dangerous", "FireBrick" : "Very Dangerous"
+    "Green": "Very safe", "YellowGreen": "Safe", "OrangeRed": "Slightly Dangerous",
+    "Red": "Dangerous", "FireBrick": "Very Dangerous"
 }
 
 world_risk_url = "https://en.wikipedia.org/wiki/List_of_countries_by_natural_disaster_risk"
 
+
 def get_safety_status(percent):
     percent_to_use = int(percent)
-    if percent_to_use in range(1,19) : status = "Very Safe"
-    elif percent_to_use in range(19,36) : status = "Safe"
-    elif percent_to_use in range(36,53) : status = "Slightly Safe"
-    elif percent_to_use in range(53,70) : status = "Slightly Dangerous"
-    elif percent_to_use in range(70,87): status = "Dangerous"
-    elif percent_to_use in range(87,101) : status = "Very Dangerous"
+    if percent_to_use in range(1, 19): status = "Very Safe"
+    elif percent_to_use in range(19, 36): status = "Safe"
+    elif percent_to_use in range(36, 53): status = "Slightly Safe"
+    elif percent_to_use in range(53, 70): status = "Slightly Dangerous"
+    elif percent_to_use in range(70, 87): status = "Dangerous"
+    elif percent_to_use in range(87, 101): status = "Very Dangerous"
     else:
         logging.warning("Can not determine status of country")
         return None
     return status
 
-def get_safety_index(country, no_of_countries=163):
+
+def get_risk_caused_by_violence(country, no_of_countries=163):
     response = requests.get(global_peace_index_url)
     website = BeautifulSoup(response.text, 'html.parser')
     table_rows = website.select("table tr")
     country_details = [rows for rows in table_rows if rows.find(title=re.compile(country)) is not None]\
                       or [rows for rows in table_rows if rows.find(title=re.compile(country.title())) is not None]
     if country_details:
-        country_latest_index = re.search(r"\d+",[child for child in country_details[0].children][3].string).group()
+        country_details_children = [child for child in country_details[0].children]
+        country_latest_index = re.search(r"\d+", str(country_details_children[3])).group()
     else:
-       logging.warning("Can not find details for this country {}".format(country))
+       logging.error("Can not find details for this country {}".format(country))
        return None
 
     country_percentage = math.ceil((int(country_latest_index)/no_of_countries)*100)
@@ -51,16 +54,17 @@ def get_safety_index(country, no_of_countries=163):
 
 
 #todo how to handle requests errors
-def get_natural(country):
+def get_natural_disaster_risk(country):
     res = requests.get(world_risk_url)
     website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
-    website2 = website.find('a',text=country)
-    if website2:
-        parent_td = website2.find_parent('td')
-        th  = parent_td.next_sibling.next_sibling
-        if th.text:
-            kl = re.search(r'background:\w+',str(th)).group().lstrip('background:')
-            return {'index':status_from_color[kl], 'status':parent_td.previous_sibling.previous_sibling.text}
+    country_a_element = website.find('a',text=country)
+    if country_a_element:
+        parent_td = country_a_element.find_parent('td')
+        current_score_td  = parent_td.next_sibling.next_sibling
+        if current_score_td.text:
+            current_score_background = re.search(r'background:\w+',str(current_score_td)).group()
+            current_score_color = current_score_background.lstrip('background:')
+            return {'status':status_from_color[current_score_color], 'index':parent_td.previous_sibling.previous_sibling.text}
         else:
             logging.error('Current world risk index data could not be determined for {}'.format(country))
             return None
@@ -69,20 +73,22 @@ def get_natural(country):
         return None
 
 
-def getStat(country):
-    stat = {}
-    stat['name'] = country
-    stat['natural']  = get_natural(country)
-    stat['human'] =  get_safety_index(country)
-    for k,v in copy.deepcopy(stat).items():
+def country_safety_stat(country):
+    safety_stat = {}
+    safety_stat['name'] = country
+    safety_stat['natural_disaster_risk']  = get_natural_disaster_risk(country)
+    safety_stat['human'] =  get_risk_caused_by_violence(country)
+
+    # to avoid run time error when looping
+    for k,v in copy.deepcopy(safety_stat).items():
         if v is None:
-            del stat[k]
-    return stat
+            del safety_stat[k]
+    return safety_stat
 
 if __name__ == "__main__":
-    #print(get_safety_index('Nigeria'))
-    #print(get_natural('Palestine'))
-    #print(getStat('Nigeria'))
-    #print(getStat('Bosnia and Herzegovina'))
-    print(getStat('Democratic Republic of the Congo'))
-    print(getStat('Vanuatu'))
+    print (get_risk_caused_by_violence('Nigeria'))
+    print(get_natural_disaster_risk('Palestine'))
+    print(country_safety_stat('Nigeria'))
+    print(country_safety_stat('Bosnia and Herzegovina'))
+    print(country_safety_stat('Democratic Republic of the Congo'))
+    print(country_safety_stat('Vanuatu'))

@@ -59,7 +59,7 @@ def human_attack_safety_status(country, no_of_countries=163):
         country_details_children = [child for child in country_details[0].children]
         country_latest_index = re.search(r"\d+", str(country_details_children[3])).group()
     else:
-       logging.error("Can not find details for this country {}".format(country))
+       logging.error("Can not find GPI details for this country {}".format(country))
        return None
 
     country_percentage = math.ceil((int(country_latest_index)/no_of_countries)*100)

@@ -16,32 +16,37 @@ country_dict = {'Easter Island': 'easter-island', 'Puerto Rico': 'puerto-rico', 
 def traveler_advice_classes(css_class):
     return css_class == "traveler-disease" or css_class == "traveler-findoutwhy"
 
-def disease_data(child):
+def disease_name_and_link(child):
     disease = child.find('a')
     return  disease.text, disease.get('href')
 
 def traveler_advice(res):
+    """
+    Get health ad
+    :param res: requests object gotten from passing traveler tips url to requests.get
+    :return: zip object containing health advice for travelers
+    """
     website_data = BeautifulSoup(res.text, "html.parser", parse_only=SoupStrainer(class_=traveler_advice_classes))
 
-    website_data_p = [disease_data(child) for child in website_data.find_all(class_="traveler-disease")]
+    website_data_p = [disease_name_and_link(child) for child in website_data.find_all(class_="traveler-disease")]
 
     website_data_kl = [child.get_text(strip=True) for child in website_data.find_all(class_="traveler-findoutwhy"
 )]
 
     return (zip (website_data_p, website_data_kl))
 
-def get_disease_management_tips(disease):
+def serialize_traveler_advice(disease):
     """
-
+    Serialize tips for disease
     :param disease: Contains data for different disease
     :type disease tuple
-    :return: Dict containing with name of diseases as keys, mapping to another dictionary
-            where link is the key to the url to read more about the disease and info is the key to get
-            country specific advice for that disease
+    :return: Dict where sub-setting with
+                name gives the name of disease
+                link gives the link to a description of the disease
+                tip gives advice for  avoiding that disease
     """
-    disease_management_tip = {}
     try:
-        disease_management_tip[disease[0][0]] = {'link': base_health_tips_url + disease[0][1], 'info':disease[1]}
+        disease_management_tip = {"disease_name":disease[0][0], 'disease_link': base_health_tips_url + disease[0][1], 'tip':disease[1]}
         return disease_management_tip
     except:
         logging.warning("Can not get management tip for {disease}".format(disease=disease))
@@ -58,14 +63,14 @@ def get_traveler_health_advice_for_country(country):
     try:
         country_query_string = country_dict[country]
     except KeyError:
-        logging.error("Ensure country was passed in this format Nigeria or or Turks and Caicos Islands Saint Vincent and the Grenadines")
+        logging.error("Ensure country was passed in this format Nigeria or Turks and Caicos Islands or Saint Vincent and the Grenadines")
         return False
     res = requests.get(travel_tips_url_to_query.format(country=country_query_string))
-    health_advice = [get_disease_management_tips(disease) for disease in traveler_advice(res) if disease]
+    health_advice = [serialize_traveler_advice(disease) for disease in traveler_advice(res) if disease]
     if health_advice:
         return health_advice
     else:
-        logging.error("Could not get advice for country")
+        logging.error("Could not get health advice for {country}".format(country=country))
         return False
 
 if __name__ == "__main__":

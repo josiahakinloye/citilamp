@@ -1,5 +1,5 @@
 """
-This module contains functions to get the safetu of a country either from humman attacks or natural diseasters
+This module contains functions to get the safety of a country either from human attacks or natural diseasters
 """
 import copy
 import logging
@@ -33,7 +33,7 @@ def get_safety_status(percent):
     return status
 
 
-def get_risk_caused_by_violence(country, no_of_countries=163):
+def get_human_attack_safety_status(country, no_of_countries=163):
     response = requests.get(global_peace_index_url)
     website = BeautifulSoup(response.text, 'html.parser')
     table_rows = website.select("table tr")
@@ -53,8 +53,7 @@ def get_risk_caused_by_violence(country, no_of_countries=163):
     return country_safety
 
 
-#todo how to handle requests errors
-def get_natural_disaster_risk(country):
+def get_natural_disaster_safety_status(country):
     res = requests.get(world_risk_url)
     website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
     country_a_element = website.find('a',text=country)
@@ -76,8 +75,8 @@ def get_natural_disaster_risk(country):
 def country_safety_stat(country):
     safety_stat = {}
     safety_stat['name'] = country
-    safety_stat['natural_disaster_risk']  = get_natural_disaster_risk(country)
-    safety_stat['human'] =  get_risk_caused_by_violence(country)
+    safety_stat['natural_disaster_safety']  = get_natural_disaster_safety_status(country)
+    safety_stat['human_attack_safety'] =  get_human_attack_safety_status(country)
 
     # to avoid run time error when looping
     for k,v in copy.deepcopy(safety_stat).items():
@@ -86,8 +85,8 @@ def country_safety_stat(country):
     return safety_stat
 
 if __name__ == "__main__":
-    print (get_risk_caused_by_violence('Nigeria'))
-    print(get_natural_disaster_risk('Palestine'))
+    print (get_human_attack_safety_status('Nigeria'))
+    print(get_natural_disaster_safety_status('Palestine'))
     print(country_safety_stat('Nigeria'))
     print(country_safety_stat('Bosnia and Herzegovina'))
     print(country_safety_stat('Democratic Republic of the Congo'))

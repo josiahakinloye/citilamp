@@ -39,6 +39,10 @@ def get_safety_index(country, no_of_countries=163):
     country_safety['status'] = get_safety_status(country_percentage)
     return country_safety
 
+status_from_color = {
+    "Green": "Very safe", "YellowGreen" : "Safe", "OrangeRed" : "Slightly Dangerous",
+    "Red" : "Dangerous", "FireBrick" : "Very Dangerous"
+}
 
 natural_dieaseter = "https://en.wikipedia.org/wiki/List_of_countries_by_natural_disaster_risk"
 
@@ -48,10 +52,11 @@ def get_natural(country):
     website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
     website2 = website.find('a',text=country)
     if website2:
-        th  = website2.find_parent('td').next_sibling.next_sibling
+        parent_td = website2.find_parent('td')
+        th  = parent_td.next_sibling.next_sibling
         if th.text:
             kl = re.search(r'background:\w+',str(th)).group().lstrip('background:')
-            return th.text, kl
+            return {'index':status_from_color[kl], 'status':parent_td.previous_sibling.previous_sibling.text}
         else:
             logging.error('Current world risk index data could not be determined for {}'.format(country))
             return False
@@ -59,10 +64,20 @@ def get_natural(country):
         logging.error("Could not find natural disaster data for {country}".format(country=country))
         return False
 
-
+def getStat(country):
+    stat = {}
+    stat['name'] = country
+    stat['natural']  = get_natural(country)
+    stat['human'] =  get_safety_index(country)
+    return stat
 if __name__ == "__main__":
     """
     print (get_safety_index('Republic of the Congo'))
     print(get_safety_index('nigeria'))
     """
-    print(get_natural('Nigeria'))
+    #print(get_safety_index('Nigeria'))
+    #print(get_natural('Palestine'))
+    #print(getStat('Nigeria'))
+    #print(getStat('Bosnia and Herzegovina'))
+    print(getStat('Democratic Republic of the Congo'))
+    print(getStat('Somalia'))

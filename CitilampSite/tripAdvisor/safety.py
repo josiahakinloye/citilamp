@@ -3,7 +3,7 @@ This module contains functions to get the safetu of a country either from humman
 """
 import math
 import re
-
+import logging
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
 
@@ -41,12 +41,23 @@ def get_safety_index(country, no_of_countries=163):
 
 
 natural_dieaseter = "https://en.wikipedia.org/wiki/List_of_countries_by_natural_disaster_risk"
+
+#todo how to handle requests errors
 def get_natural(country):
     res = requests.get(natural_dieaseter)
     website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
-    website2 = website.find('a',title=country)
-    th  = website2.find_parent('td')
-    return website2.text, th.next_sibling.next_sibling
+    website2 = website.find('a',text=country)
+    if website2:
+        th  = website2.find_parent('td').next_sibling.next_sibling
+        if th.text:
+            kl = re.search(r'background:\w+',str(th)).group().lstrip('background:')
+            return th.text, kl
+        else:
+            logging.error('Current world risk index data could not be determined for {}'.format(country))
+            return False
+    else:
+        logging.error("Could not find natural disaster data for {country}".format(country=country))
+        return False
 
 
 if __name__ == "__main__":

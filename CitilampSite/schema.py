@@ -2,6 +2,8 @@ import graphene
 
 import AdsSystem.schema as AdsSystemSchema
 import citilamp.schema as citilampschema
+from .tripAdvisor.safety import get_country_safety_stats
+from .tripAdvisor.health import get_traveler_health_advice_for_country
 from .utils.exchange import convertCurrency
 from .utils.timeComparison import time_details_comparison
 from .utils.weather import get_weather_forecast_comparison
@@ -53,5 +55,17 @@ class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
         origin = kwargs.get('origin')
         destination = kwargs.get('destination')
         return  get_distance(origin, destination)
+
+    health_advice = graphene.String(country=graphene.String())
+
+    def resolve_health_advice(self, info, *args, **kwargs):
+        country = kwargs.get('country')
+        return get_traveler_health_advice_for_country(country=country)
+
+    country_safety_status = graphene.String(country=graphene.String())
+
+    def resolve_country_safety_status(self, info, *args, **kwargs):
+        country = kwargs.get('country')
+        return get_country_safety_stats(country)
 
 schema = graphene.Schema(query=Query)

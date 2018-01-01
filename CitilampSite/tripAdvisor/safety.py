@@ -19,14 +19,20 @@ status_from_color = {
 world_risk_url = "https://en.wikipedia.org/wiki/List_of_countries_by_natural_disaster_risk"
 
 
-def safety_status(percent):
-    percent_to_use = int(percent)
-    if percent_to_use in range(1, 19): status = "Very Safe"
-    elif percent_to_use in range(19, 36): status = "Safe"
-    elif percent_to_use in range(36, 53): status = "Slightly Safe"
-    elif percent_to_use in range(53, 70): status = "Slightly Dangerous"
-    elif percent_to_use in range(70, 87): status = "Dangerous"
-    elif percent_to_use in range(87, 101): status = "Very Dangerous"
+def safety_status_text(percent):
+    """
+    Gets status text using percent passed in
+    :param percent: number to use to get text
+        :type percent int
+    :return:
+        status: string describing status or None(if status text could not be determined
+    """
+    if percent in range(1, 19): status = "Very Safe"
+    elif percent in range(19, 36): status = "Safe"
+    elif percent in range(36, 53): status = "Slightly Safe"
+    elif percent in range(53, 70): status = "Slightly Dangerous"
+    elif percent in range(70, 87): status = "Dangerous"
+    elif percent in range(87, 101): status = "Very Dangerous"
     else:
         logging.warning("Can not determine status of country")
         return None
@@ -34,6 +40,16 @@ def safety_status(percent):
 
 
 def human_attack_safety_status(country, no_of_countries=163):
+    """
+    Get the safety of a country using the Global Peace Index(GPI).
+    The GPI gauges global peace using three broad themes: the level of societal safety and security,the extent of
+    ongoing domestic and international conflict and the degree of militarization
+    :param country: Name of country to get status for
+        :type country: str
+    :param no_of_countries: Number of countries in current GPI ranking
+        :type no_of_countries: int
+    :return: Dict containing status for country or None(If status could not be determined)
+    """
     response = requests.get(global_peace_index_url)
     website = BeautifulSoup(response.text, 'html.parser')
     table_rows = website.select("table tr")
@@ -49,11 +65,17 @@ def human_attack_safety_status(country, no_of_countries=163):
     country_percentage = math.ceil((int(country_latest_index)/no_of_countries)*100)
     country_safety ={}
     country_safety['index']=country_latest_index
-    country_safety['status'] = safety_status(country_percentage)
+    country_safety['status'] = safety_status_text(country_percentage)
     return country_safety
 
 
 def natural_disaster_safety_status(country):
+    """
+    Safety status of country from damage due to natural disasters(Earth quakes, floods , droughts etc) using World Risk Index
+    :param country: Country to get safety status from
+        :type country: str
+    :return: Dict containing status for country or None(If status could not be determined)
+    """
     res = requests.get(world_risk_url)
     website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
     country_a_element = website.find('a',text=country)
@@ -74,6 +96,12 @@ def natural_disaster_safety_status(country):
 
 
 def get_country_safety_stats(country):
+    """
+    Safety status of a country
+    :param country: Country to get status of
+        :type country str
+    :return: Dict containing status of country or None
+    """
     safety_stat = {}
     safety_stat['name'] = country
     safety_stat['natural_disaster_safety']  = natural_disaster_safety_status(country)
@@ -83,7 +111,10 @@ def get_country_safety_stats(country):
     for k,v in copy.deepcopy(safety_stat).items():
         if v is None:
             del safety_stat[k]
-    return safety_stat
+    if safety_stat:
+        return safety_stat
+    else:
+        return None
 
 if __name__ == "__main__":
     print (human_attack_safety_status('Nigeria'))

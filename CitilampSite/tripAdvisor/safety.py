@@ -1,7 +1,10 @@
+"""
+This module contains functions to get the safetu of a country either from humman attacks or natural diseasters
+"""
 import math
 import re
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 import requests
 
 global_peace_index_url = "https://en.wikipedia.org/wiki/Global_Peace_Index"
@@ -36,6 +39,19 @@ def get_safety_index(country, no_of_countries=163):
     country_safety['status'] = get_safety_status(country_percentage)
     return country_safety
 
+
+natural_dieaseter = "https://en.wikipedia.org/wiki/List_of_countries_by_natural_disaster_risk"
+def get_natural(country):
+    res = requests.get(natural_dieaseter)
+    website = BeautifulSoup(res.text, 'html.parser',parse_only=SoupStrainer('table'))
+    website2 = website.find('a',title=country)
+    th  = website2.find_parent('td')
+    return website2.text, th.next_sibling.next_sibling
+
+
 if __name__ == "__main__":
+    """
     print (get_safety_index('Republic of the Congo'))
     print(get_safety_index('nigeria'))
+    """
+    print(get_natural('Nigeria'))

@@ -2,7 +2,6 @@ from django.test import TestCase
 from .models import CountryAndCityAttractions, City, Country
 # Create your tests here.
 
-#todo : remove primrary keys in models
 class CitilampTestCase(TestCase):
     def setUp(self):
         self.test_attraction = CountryAndCityAttractions(name="Test Attraction")

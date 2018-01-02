@@ -42,7 +42,7 @@ class Post(models.Model):
     objects = PostManager()
 
     def __str__(self):
-        return self.title
+        return self.title + ' by ' + str(self.author)
 
     def get_absolute_url(self):
         return reverse("blog:detail", kwargs={"slug": self.slug})

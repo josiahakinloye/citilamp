@@ -58,7 +58,7 @@ class CountryAndCityInfo(models.Model):
 
 class Continent(models.Model):
     name = models.CharField(max_length=200,primary_key=True,unique=True)
-    image = models.ImageField(
+    continent_map = models.ImageField(
                                 width_field="width_field",
                                 height_field="height_field",blank=True)
     height_field = models.IntegerField(default=200, blank=True)
@@ -67,7 +67,6 @@ class Continent(models.Model):
     geo_loc = models.TextField(blank=True)
     region = models.CharField(max_length=200, blank=True)
     climate = models.TextField(blank=True)
-    continent_map = models.CharField(max_length=250, blank=True)
     def __str__(self):
         return self.name
     class Meta:

@@ -37,7 +37,7 @@ class Post(models.Model):
     read_time = models.IntegerField(blank=True, null=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
-    image = CloudinaryField('image')
+    image = CloudinaryField('image', blank=True, null=True)
 
     objects = PostManager()
 

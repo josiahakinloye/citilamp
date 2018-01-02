@@ -25,11 +25,11 @@ class AdsTestCase(TestCase):
         self.test_ad.stop_date = date.today() + timedelta(days=1)
         with self.assertRaises(AdsError) as save_error:
             self.test_ad.save()
-            self.assertEqual(save_error.msg, "Ensure start date is not less than today and stop date is greater than start date")
+            self.assertEquals(save_error.msg, "Ensure start date is not less than today and stop date is greater than start date")
 
 
     def test_cannot_save_with_bad_stop_date(self):
         self.test_ad.stop_date = date.today() - timedelta(days=1)
         with self.assertRaises(AdsError) as save_error:
             self.test_ad.save()
-            self.assertEqual(save_error.msg, "Ensure start date is not less than today and stop date is greater than start date")
+            self.assertEquals(save_error.msg, "Ensure start date is not less than today and stop date is greater than start date")

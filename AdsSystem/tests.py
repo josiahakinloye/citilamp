@@ -14,7 +14,7 @@ class AdsTestCase(TestCase):
                      owner_email='test@test.com'
                      )
 
-    def test_create_ad(self):
+    def test_can_ad_save(self):
         self.test_ad.stop_date  = date.today()+timedelta(days=1)
         self.test_ad.save()
         self.assertQuerysetEqual(Ads.objects.all(), ['<Ads: Test by test>'])

@@ -112,7 +112,7 @@ class CountryAndCityAttractions(models.Model):
     """
     Base class for attractions like zoos, restaurants, hotels etc of countries and cities
     """
-    name = models.CharField(primary_key=True, max_length=450, null=False)
+    name = models.CharField(max_length=450,)
     city= models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE,blank=True,null=True)
     address = models.TextField(blank=True)
@@ -122,7 +122,6 @@ class CountryAndCityAttractions(models.Model):
     details = models.TextField(blank=True)
 
     #check that the attraction was tied to a city or a country not both, if not do not save
-    #Todo:write tests for this
     def save(self, *args, **kwargs):
         if self.city  or  self.country:
             if self.city and self.country:

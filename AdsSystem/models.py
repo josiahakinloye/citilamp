@@ -14,7 +14,7 @@ class Ads(models.Model):
     """
     Ads model
     """
-    title = models.CharField(max_length=250,primary_key=True)
+    title = models.CharField(max_length=250)
     description = models.TextField()
 
     # for the duration of ad
@@ -39,7 +39,7 @@ class Ads(models.Model):
         """
         return date.today() >= self.stop_date
 
-    has_expired.admin_order_field = 'start_date'
+    has_expired.admin_order_field = 'stop_date'
     has_expired.boolean = True
     has_expired.short_description = "Has Ad expired?"
 

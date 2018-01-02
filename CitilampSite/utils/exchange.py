@@ -5,7 +5,7 @@ and look at the select element on their web page or call this api https://free.c
 """
 
 import requests
-
+import shelve
 
 def convertCurrency(currency_from, currency_to, amount):
     """

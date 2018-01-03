@@ -1,26 +1,30 @@
-"""Contains everything graphql with respect to AdsSystem"""
+"""Contains everything graph ql with respect to AdsSystem"""
 import graphene
 from graphene_django import DjangoObjectType
 
 from .models import Ads
 
+
 class AdsType(DjangoObjectType):
     """
-    Graphene model type that maps to the model property given in its meta class
+    Type that maps to the Ads  model
     """
     class Meta:
         """
         Meta class for AdsType class this is where you pass in
-        the name of model you want graphql  to use
+        the name of model you want graph ql  to use
         """
         model = Ads
 
 
 class Query(object):
     """
-    This contains graphql queries and their respective resolver functions
+    Graph ql query for the ads model
     """
-    approved_ads = graphene.List(AdsType)
+    # a list of valid ads
+    valid_ads = graphene.List(AdsType)
 
-    def resolve_approved_ads(self, info, *args, **kwargs):
-        return Ads.objects.filter(approved=True,)
+    def resolve_valid_ads(self, info, *args, **kwargs):
+        approved_ads = Ads.objects.filter(approved=True,)
+        approved_and_not_expired =  [ad for ad in approved_ads if  not (ad.has_expired())]
+        return approved_and_not_expired

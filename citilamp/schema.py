@@ -5,7 +5,7 @@ from citilamp.models import (Continent, Country, StateProvince, City, Park, Muse
 
 class TravelChoicesEnum(graphene.Enum):
     """
-    For travel choices ... Since graphql does not handle enums well
+    For travel choices ... Since graph ql does not handle enums well
     """
     air = "Air"
     plane = "Plane"
@@ -13,54 +13,98 @@ class TravelChoicesEnum(graphene.Enum):
     train = "Train"
 
 class ContinentType(DjangoObjectType):
+    """
+    Type that maps to the Continent model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = Continent
 
 
 class CountryType(DjangoObjectType):
+    """
+    Type that maps to the Country model
+    used to graph ql to understand the model's fields
+    """
     entry_requirement = TravelChoicesEnum()
     class Meta:
         model = Country
 
 
 class StateProvinceType(DjangoObjectType):
+    """
+    Type that maps to the StateProvince  model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = StateProvince
 
 
 class CityType(DjangoObjectType):
+    """
+    Type that maps to the City  model
+    used to graph ql to understand the model's fields
+    """
     entry_requirement = TravelChoicesEnum()
     class Meta:
         model = City
 
 class ParkType(DjangoObjectType):
+    """
+    Type that maps to the Park  model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = Park
 
 class TouristCenterType(DjangoObjectType):
+    """
+    Type that maps to the TouristCenter  model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = TouristCenter
 
 
 class BeachType(DjangoObjectType):
+    """
+    Type that maps to the Beach  model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = Beach
 
 
 class MuseumType(DjangoObjectType):
+    """
+    Type that maps to the museum model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = Museum
 
 class GalleryType(DjangoObjectType):
+    """
+    Type that maps to the Gallery  model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = Gallery
 
 class MarketTradingcenterSHOPType(DjangoObjectType):
+    """
+    Type that maps to the MarketTradingcenterSHOP model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = MarketTradingcenterSHOP
 
 
 class HistoricalAttractionType(DjangoObjectType):
+    """
+    Type that maps to the HistoricalAttraction model
+    used to graph ql to understand the model's fields
+    """
     class Meta:
         model = HistoricalAttraction
 
@@ -75,7 +119,8 @@ def makeQueries(typeToMakeQueryFieldsFor):
 
 class Query(object):
     """
-    Class that contains all resolver functions for graphql queries relating to citilamp
+    Class that contains all resolver functions for graph ql queries relating to citilamp models
+    Continent, Country, StateProvince, City, Park, Museum, TouristCenter, Gallery, MarketTradingcenterSHOP, HistoricalAttraction, Beach
     """
 
     all_continents, continent = makeQueries(ContinentType)
@@ -132,7 +177,7 @@ class Query(object):
         name = kwargs.get('name')
         return City.objects.get(pk=name)
 
-
+    # todo:can this be changed to try and still work
     def resolve_all_parks(self, info, *args, **kwargs):
         #Since park is related to both city and country
         if Park.objects.select_related("city").all():

@@ -8,6 +8,7 @@ from .utils.exchange import convertCurrency
 from .utils.timeComparison import time_details_comparison
 from .utils.weather import get_weather_forecast_comparison
 from .utils.distance import get_distance
+from .utils.news import get_news_for_country, get_headline_news
 
 class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
     """
@@ -67,5 +68,16 @@ class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
     def resolve_country_safety_status(self, info, *args, **kwargs):
         country = kwargs.get('country')
         return get_country_safety_stats(country)
+
+    country_news = graphene.String(country=graphene.String())
+
+    def resolve_country_news(self, info, *args, **kwargs):
+        country = kwargs.get('country')
+        return get_news_for_country(country)
+
+    headline_news =  graphene.String()
+
+    def resolve_headline_news(self, info, *args, **kwargs):
+        return get_headline_news()
 
 schema = graphene.Schema(query=Query)

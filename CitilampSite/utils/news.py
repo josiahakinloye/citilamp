@@ -21,7 +21,7 @@ def get_news_for_country(country_code):
     except KeyError:
         raise NewsApiError("Something went wrong with the news api, could not get news for country with code {}".format(country_code))
     country_news = map(get_some_news_info, news)
-    return country_news
+    return list(country_news)
 
 
 def get_some_news_info(headline_news):
@@ -54,7 +54,7 @@ def get_headline_news():
     except:
         raise NewsApiError("Something went wrong with the news api")
     headline_news = map(get_some_news_info, headlines)
-    return headline_news
+    return list(headline_news)
 
 if __name__ == "__main__":
     headline_news = get_headline_news()

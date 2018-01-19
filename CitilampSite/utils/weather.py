@@ -9,6 +9,7 @@ weather_api_key = 'ce8d100afc7c4f17ab5181645181901'
 
 weather_client = ApixuClient(weather_api_key)
 
+valid_response_fields_url = "https://www.apixu.com/my/fields.aspx"
 
 def get_weather_forecast_comparison(user_city, explored_city, days=7):
     """
@@ -42,7 +43,8 @@ def get_weather_info(forecast):
         day_info = forecast['date']
     except KeyError:
         raise Exception("Could not parse weather data accurately,check out valid response fields at "
-                        "https://www.apixu.com/my/fields.aspx and modify the code as necessary")
+                        "{valid_response_fields_url} and modify the code as necessary"
+                        .format(valid_response_fields_url=valid_response_fields_url))
     day_info = arrow.get(day_info).format('MMM-DD:dddd').split(':')
     day_forecast['day'] = day_info[0]
     day_forecast['weekday'] = day_info[1]

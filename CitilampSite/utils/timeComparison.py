@@ -1,10 +1,16 @@
+"""
+
+"""
+
+import logging
+
 import arrow
 import googlemaps
 
 
 #todo change google map credentials
 
-google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"#"AIzaSyCHijPTy-zvupaNKEF3QqsnVDFpWBbw5gM"
+google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"
 gmaps = googlemaps.Client(key=google_maps_key)
 
 def get_latitude_and_longitude(place):
@@ -19,7 +25,7 @@ def get_latitude_and_longitude(place):
         latitude_and_longitude = response[0]['geometry']['location']
     except:
         raise Exception("Could not determine latitude and longitude")
-
+        return False
     return latitude_and_longitude
 
 def get_timedetails_of_location(place):
@@ -38,7 +44,7 @@ def get_timedetails_of_location(place):
     time_details = arrow.now(timezone_id).format('D/MMM/YY-h:mm A')
     date, time = time_details.split('-')
 
-    details[place]=  (date, time)
+    details[place]=  {'date' : date, 'time' : time}
 
     return details
 
@@ -55,4 +61,4 @@ def time_details_comparison(places):
     return comparison_list
 
 if __name__ == "__main__":
-    print(time_details_comparison(['lagos', 'germany', 'white house']))
+    print(time_details_comparison(['lagos', 'white house', 'facebook', 'germany']))

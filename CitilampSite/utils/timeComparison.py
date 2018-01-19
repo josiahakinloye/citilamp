@@ -1,17 +1,14 @@
 """
-
+Module containing functions for doing time comparison
 """
-
 import logging
 
-import arrow
+import arrow # time manipulation
 import googlemaps
-
-
-#todo change google map credentials
 
 google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"
 gmaps = googlemaps.Client(key=google_maps_key)
+
 
 def get_latitude_and_longitude(place):
     """
@@ -23,10 +20,11 @@ def get_latitude_and_longitude(place):
     response = gmaps.geocode(place)
     try:
         latitude_and_longitude = response[0]['geometry']['location']
-    except:
+    except KeyError:
         logging.warning("Could not determine latitude and longitude")
         return None
     return latitude_and_longitude
+
 
 def get_timedetails_of_location(place):
     """
@@ -40,15 +38,16 @@ def get_timedetails_of_location(place):
     if latitude_and_longitude:
         try:
             timezone_id = gmaps.timezone(latitude_and_longitude)['timeZoneId']
-        except:
+        except KeyError:
             logging.warning("Can not determine timezone of {place}".format(place=place))
             return None
         time_details = arrow.now(timezone_id).format('D/MMM/YY-h:mm A')
         date, time = time_details.split('-')
 
-        details[place]=  {'date' : date, 'time' : time}
+        details[place] = {'date': date, 'time': time}
 
         return details
+
 
 def time_details_comparison(places):
     """
@@ -61,6 +60,7 @@ def time_details_comparison(places):
     for place in places:
         comparison_list.append(get_timedetails_of_location(place))
     return comparison_list
+
 
 if __name__ == "__main__":
     print(time_details_comparison(['lagos', 'white house', 'facebook', 'germany']))

@@ -1,11 +1,14 @@
-import arrow
+"""
+Module containing functions for doing time comparison
+"""
+import logging
+
+import arrow # for time manipulation
 import googlemaps
 
-
-#todo change google map credentials
-
-google_maps_key = "AIzaSyCX35UUsEn5Q2duK_j674X-dSp-Xng5W_E"
+google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"
 gmaps = googlemaps.Client(key=google_maps_key)
+
 
 def get_latitude_and_longitude(place):
     """
@@ -17,10 +20,11 @@ def get_latitude_and_longitude(place):
     response = gmaps.geocode(place)
     try:
         latitude_and_longitude = response[0]['geometry']['location']
-    except:
-        raise Exception("Could not determine latitude and longitude")
-
+    except (IndexError, KeyError):
+        logging.error("Could not determine latitude and longitude {place}".format(place=place))
+        return None
     return latitude_and_longitude
+
 
 def get_timedetails_of_location(place):
     """
@@ -31,16 +35,19 @@ def get_timedetails_of_location(place):
     """
     details = {}
     latitude_and_longitude = get_latitude_and_longitude(place)
-    try:
-        timezone_id = gmaps.timezone(latitude_and_longitude)['timeZoneId']
-    except:
-        raise Exception("Can not determine timezone of place")
-    time_details = arrow.now(timezone_id).format('D/MMM/YY-h:mm A')
-    date, time = time_details.split('-')
+    if latitude_and_longitude:
+        try:
+            timezone_id = gmaps.timezone(latitude_and_longitude)['timeZoneId']
+        except KeyError:
+            logging.error("Can not determine timezone of {place}".format(place=place))
+            return None
+        time_details = arrow.now(timezone_id).format('D/MMM/YY-h:mm A')
+        date, time = time_details.split('-')
 
-    details[place]=  (date, time)
+        details[place] = {'date': date, 'time': time}
 
-    return details
+        return details
+
 
 def time_details_comparison(places):
     """
@@ -54,5 +61,6 @@ def time_details_comparison(places):
         comparison_list.append(get_timedetails_of_location(place))
     return comparison_list
 
+
 if __name__ == "__main__":
-    print(time_details_comparison(['lagos', 'germany']))
+    print(time_details_comparison(['Lagos', 'White House', 'Facebook', 'PlaceThatdoesNotExist']))

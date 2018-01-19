@@ -52,9 +52,9 @@ GRAPHENE = {
 
 
 cloudinary.config(
-    cloud_name = "dvjtax5tb" ,
-    api_key = "618235163161715",
-    api_secret = "dyCFYNZL5AZZfupauesxOYiQEbg"
+    cloud_name = "dvf1piots" ,
+    api_key = "624853342197928",
+    api_secret = "QnP5XBrvir0hGpFZAhBl5pmcDdY"
 )
 
 MIDDLEWARE = [

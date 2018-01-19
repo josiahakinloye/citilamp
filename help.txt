@@ -1,11 +1,12 @@
 This is the first thing you need to read
 This project was built and tested only with python 3.5.2, ensure you have the right version of python
-Also setup a python virtual environment
-Run setup.sh to install all the necessary dependencies
+Also setup a python virtual environment.
+Run setup.sh to install all the necessary dependencies.
+Set up your database connection and run python manage.py makemigrations and python manage.py migrate.
 Note: All app graphql schema are in the apps' schema.py file
 What the app contain:
     The AdsSystem app contains everything that deals with Ads(models, schema etc)
-    The blog contains everything to do with the blog
+    The blog app contains everything to do with the blog
         - It's utils.py file contains code for some helpful functionality like
         slug generator and getting the read time for blog posts
     Citilamp app contains models and schema of country , city,parks etc.

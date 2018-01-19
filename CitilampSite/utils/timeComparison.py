@@ -4,7 +4,7 @@ import googlemaps
 
 #todo change google map credentials
 
-google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"#"AIzaSyCHijPTy-zvupaNKEF3QqsnVDFpWBbw5gM "#"AIzaSyA60LdGkJ9Hz2LOnwjpOjDCk9m9gUxhM6s"#"AIzaSyCX35UUsEn5Q2duK_j674X-dSp-Xng5W_E"
+google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"#"AIzaSyCHijPTy-zvupaNKEF3QqsnVDFpWBbw5gM"
 gmaps = googlemaps.Client(key=google_maps_key)
 
 def get_latitude_and_longitude(place):
@@ -32,7 +32,6 @@ def get_timedetails_of_location(place):
     details = {}
     latitude_and_longitude = get_latitude_and_longitude(place)
     try:
-        print(gmaps.timezone(latitude_and_longitude))
         timezone_id = gmaps.timezone(latitude_and_longitude)['timeZoneId']
     except:
         raise Exception("Can not determine timezone of {place}".format(place=place))

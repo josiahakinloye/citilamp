@@ -20,8 +20,8 @@ def get_latitude_and_longitude(place):
     response = gmaps.geocode(place)
     try:
         latitude_and_longitude = response[0]['geometry']['location']
-    except KeyError:
-        logging.warning("Could not determine latitude and longitude")
+    except (IndexError, KeyError):
+        logging.error("Could not determine latitude and longitude {place}".format(place=place))
         return None
     return latitude_and_longitude
 
@@ -39,7 +39,7 @@ def get_timedetails_of_location(place):
         try:
             timezone_id = gmaps.timezone(latitude_and_longitude)['timeZoneId']
         except KeyError:
-            logging.warning("Can not determine timezone of {place}".format(place=place))
+            logging.error("Can not determine timezone of {place}".format(place=place))
             return None
         time_details = arrow.now(timezone_id).format('D/MMM/YY-h:mm A')
         date, time = time_details.split('-')
@@ -63,4 +63,4 @@ def time_details_comparison(places):
 
 
 if __name__ == "__main__":
-    print(time_details_comparison(['lagos', 'white house', 'facebook', 'germany']))
+    print(time_details_comparison(['Lagos', 'White House', 'Facebook', 'PlaceThatdoesNotExist']))

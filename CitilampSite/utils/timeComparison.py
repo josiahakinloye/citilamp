@@ -3,7 +3,7 @@ Module containing functions for doing time comparison
 """
 import logging
 
-import arrow # time manipulation
+import arrow # for time manipulation
 import googlemaps
 
 google_maps_key = "AIzaSyDBtjYL7sDcinwny6S0gHF8xC2uPwvcjEA"

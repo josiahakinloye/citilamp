@@ -38,7 +38,7 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     image = CloudinaryField('image', blank=True, null=True)
-
+    image_url = models.URLField(blank=True, null=True)
     objects = PostManager()
 
     def __str__(self):
@@ -56,6 +56,8 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
         instance.slug = unique_slug_generator(instance)
     read_time_var = get_read_time(html_string=instance.content)
     instance.read_time = read_time_var
+    if instance.image:
+        instance.image_url = "http://res.cloudinary.com/{cloud_name}/".format(cloud_name=settings.CLOUDNAME)+str(instance.image)
 
 
 pre_save.connect(pre_save_post_receiver, sender=Post)

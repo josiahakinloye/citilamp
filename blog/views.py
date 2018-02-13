@@ -9,6 +9,19 @@ from django.views.generic import DetailView
 from .models import Post
 
 
+def searched_posts(parameter_to_query_with):
+    """
+    Returns searched posts querying with the parameter passed in
+    :param parameter_to_query_with:
+    :return:
+    """
+    return Post.objects.active().filter(
+        Q(title__icontains=parameter_to_query_with) |
+        Q(content__icontains=parameter_to_query_with) |
+        Q(author__first_name__icontains=parameter_to_query_with) |
+        Q(author__last_name__icontains=parameter_to_query_with)
+    ).distinct()
+
 class PostDetailView(DetailView):
     template_name = 'post_detail.html'
 
@@ -30,12 +43,7 @@ def post_list(request):
 
     query = request.GET.get("q")
     if query:
-        queryset_list = queryset_list.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(user__first_name__icontains=query) |
-            Q(user__last_name__icontains=query)
-        ).distinct()
+        queryset_list = searched_posts(query)
     paginator = Paginator(queryset_list, 8)  # Show 25 contacts per page
     page_request_var = "page"
     page = request.GET.get(page_request_var)

@@ -5,7 +5,7 @@ from .models import Post
 
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
-    list_display = ["title", "updated", "timestamp"]
+    list_display = ["title", "author","updated", "timestamp"]
     list_filter = ["updated", "timestamp"]
     search_fields = ["title", "content"]
-    exclude = ['slug']
+    exclude = ['slug','image_url']

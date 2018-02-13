@@ -1,6 +1,7 @@
 import graphene
 
 import AdsSystem.schema as AdsSystemSchema
+import blog.schema as BlogSchema
 import citilamp.schema as citilampschema
 from .tripAdvisor.safety import get_country_safety_stats
 from .tripAdvisor.health import get_traveler_health_advice_for_country
@@ -9,7 +10,7 @@ from .utils.timeComparison import time_details_comparison
 from .utils.weather import get_weather_forecast_comparison
 from .utils.distance import get_distance
 
-class Query(citilampschema.Query, AdsSystemSchema.Query, graphene.ObjectType):
+class Query(citilampschema.Query, AdsSystemSchema.Query, BlogSchema.Query, graphene.ObjectType):
     """
     This class will inherit from multiple Queries
     as we begin to add more apps to this project

@@ -13,13 +13,14 @@ def searched_posts(parameter_to_query_with):
     """
     Returns searched posts querying with the parameter passed in
     :param parameter_to_query_with:
-    :return:
+    :return:  Query set contains all valid posts
     """
     return Post.objects.active().filter(
         Q(title__icontains=parameter_to_query_with) |
         Q(content__icontains=parameter_to_query_with) |
         Q(author__first_name__icontains=parameter_to_query_with) |
-        Q(author__last_name__icontains=parameter_to_query_with)
+        Q(author__last_name__icontains=parameter_to_query_with) |
+        Q(author__username__icontains=parameter_to_query_with)
     ).distinct()
 
 class PostDetailView(DetailView):

@@ -51,10 +51,10 @@ GRAPHENE = {
     'SCHEMA_OUTPUT': 'schema.json'
 }
 
-CLOUDNAME = "dvf1piots"
+CLOUDNAME = "dvf1piots" #  Cloudinary cloud name
 
 cloudinary.config(
-    cloud_name = "dvf1piots" ,
+    cloud_name = CLOUDNAME ,
     api_key = "624853342197928",
     api_secret = "QnP5XBrvir0hGpFZAhBl5pmcDdY"
 
